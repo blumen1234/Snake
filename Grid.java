@@ -1,40 +1,48 @@
 package ch.fhgr.jenb.snake.modell;
 
 public class Grid {
-	private boolean isSnake = false;
-	private boolean fruit = false;
-	private boolean gameover = false;
-	private boolean isSnakebody = false;
+
+	boolean fruitonfield = false;
+	boolean isSnakeonfield = false;
+	boolean isSnakelonger = false;
+	boolean isSnake = false;
+
+	public boolean fruitSnake() {
+		fruitonfield = true;
+		if (isSnakeonfield) {
+			eatFruit();
+			snakePlus();
+			return true;
+		} else
+			return false;
+
+	}
+
+	public boolean eatSnake() {
+		isSnake = true;
+		if (isSnakeonfield) {
+			gameover();
+			return true;
+		} else
+			return false;
+	}
+
+	public void eatFruit() {
+		fruitonfield = false;
+
+	}
+
+	public void snakePlus() {
+		// Grid wird hinzugefügt
+	}
+
+	public void gameover() {
+		System.out.println("Gameover");
+	}
+
 	public boolean isSnake() {
-		return isSnake;
-	}
-	public boolean isFruit() {
-		return fruit;
-	}
-	public void setFruit(boolean fruit) {
-		this.fruit = fruit;
-	}
-	public boolean isGameover() {
-		return gameover;
-	}
-	public void setGameover(boolean gameover) {
-		this.gameover = gameover;
-	}
-	public void setSnake(boolean isSnake) {
-		this.isSnake = isSnake;
-	}
-	
-	public void eat() {
-		this.fruit = true;
-		if (isSnake) {
-			this.setSnakebody(true);
-		}
-	}
-	public boolean isSnakebody() {
-		return isSnakebody;
-	}
-	public void setSnakebody(boolean isSnakebody) {
-		this.isSnakebody = isSnakebody;
+		return isSnakeonfield;
 	}
 
 }
+
