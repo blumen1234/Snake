@@ -1,54 +1,60 @@
 package ch.fhgr.jenb.snake;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+
+
+
+
+/*Raster bei der die Snakecell angezeigt wird. Länge und Breite wird definiert und die fixe Tabelle mit den 
+ * definiert */
+ 
+/*Hoch, unten, rechts, links, Frucht, keine Frucht, Rand, kein Rand, Zelle mit Snake besetzt*/
 
 public class SnakeGrid {
 	
 
-/*public static  MAX_LENGTH = 10;
-/*public static MAX_WIDTH = 20;*/
+public static int MAX_LENGTH = 10;
 
 
+/*SnakeGrid= Raster vom Spiel*/
+	/*Initialisierung mit einer Variable und einem Wert*/
 	boolean isSnakelonger = false;
 	boolean isSnake = false;
-
-	
-	List<SnakeCell> snakegrid = new ArrayList<SnakeCell>();
-	
-	
-	
-	
+	/* Arrays ist ein nicht primitiver Datentyp*/
+	SnakeCell[][] snakecell = new SnakeCell[10][10];	
+	/*public,private und default sind Attribute einer Variable*/
 	public SnakeGrid() {
-		
-		
-	   /* snakegrid = new SnakeGrid[10][10];   
 	    // Anfangswerte setzen für alle 100 Felder   
-	    for (int i = 0; i < 10; i++) { 
-	      // senkrecht     
-	      for (int j = 0; j < 10; j++){ 
-	        //waagerecht
-	        grids[j][i]=new Grid(); 
-		
-		snakegrid.add(new SnakeCell(2,1));
-		snakegrid.add(new SnakeCell(3,1));
-		System.out.println("f***");*/
-	
-		
+	    for (int i = 0; i < snakecell.length; i++)
+	    	for (int j = 0; j < snakecell.length; j++)
+	    System.out.println(snakecell[i][j]);
+	    
 	}
 	
 	
-	public String toString () {
-		StringBuffer sb = new StringBuffer();
-		Iterator it = snakegrid.iterator();
-		while (it.hasNext()) {
-			SnakeCell sc = (SnakeCell)it.next();
-			sb.append(sc.toString() + "\n");
-		}
-		
-		return sb.toString();
-	}
 	
+	/*
+	public boolean fruitSnake() {
+		fruitonfield = true;
+		if (isSnakeonfield) {
+			eatFruit();
+			snakePlus();
+			return true;
+		} else
+			return false;
+
+	}*/
+	
+	/*public boolean eatSnake() {
+	isSnake = true;
+	if (isSnakeonfield) {
+		gameover();
+		return true;
+	} else
+		return false;
+}
+*/
 
 }
+
+/* Fragen an Weissgerber: ist das Raster so richtig?*/
 
