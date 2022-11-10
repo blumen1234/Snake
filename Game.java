@@ -1,8 +1,11 @@
-package ch.fhgr.jenb.snake.modell;
+package ch.fhgr.jenb.snake;
 
 public class Game {
 	
-	private Playground playGround = new PlayGround;
+/* game init - ruft die Frucht auf und Gameover*/
+	
 	
 
+
 }
+
