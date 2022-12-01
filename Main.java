@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 
 
 /* Funktion, um die Application abzuspielen*/
-public class View extends Application {
+public class Main extends Application {
 	@Override
 	/*void sagt es hat keinen return-Wert*/
 	public void start(Stage primaryStage) {
