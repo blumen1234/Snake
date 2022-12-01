@@ -8,7 +8,6 @@ public class SnakeCell {
 
 	private boolean fruitonfield = false;
 	private boolean isSnakeonfield = false;
-	private boolean nothingOnfield = true;
 
 	public SnakeCell() {
 		
@@ -38,16 +37,19 @@ public class SnakeCell {
 
 
 	public boolean isNothingOnfield() {
-		return nothingOnfield;
+		return !fruitonfield && !isSnakeonfield;
 	}
 
-
-	public void setNothingOnfield(boolean nothingOnfield) {
-		this.nothingOnfield = nothingOnfield;
-	}
 	
 	public String toString () {
-		return "snakecell:" + this.isSnakeonfield + "fruitcell:"+ this.fruitonfield;
+		return "snakecell: " + this.isSnakeonfield + " fruitcell: "+ this.fruitonfield;
 
     }
+	
+	public String toStringLetters() {
+		if (isSnakeonfield) return "-";
+		if (fruitonfield) return "o";
+        return "x";
+    }
+	
 }
