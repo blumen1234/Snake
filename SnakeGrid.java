@@ -2,8 +2,6 @@ package ch.fhgr.jenb.snake;
 
 
 
-
-
 /*Raster bei der die Snakecell angezeigt wird. Länge und Breite wird definiert und die fixe Tabelle mit den 
  * definiert */
  
@@ -19,18 +17,32 @@ public static int MAX_LENGTH = 10;
 	/*Initialisierung mit einer Variable und einem Wert*/
 	boolean isSnakelonger = false;
 	boolean isSnake = false;
+	
 	/* Arrays ist ein nicht primitiver Datentyp*/
-	SnakeCell[][] snakecell = new SnakeCell[10][10];	
+	private SnakeCell[][] snakecell = new SnakeCell[MAX_LENGTH][MAX_LENGTH];
+	
+	
 	/*public,private und default sind Attribute einer Variable*/
 	public SnakeGrid() {
 	    // Anfangswerte setzen für alle 100 Felder   
 	    for (int i = 0; i < snakecell.length; i++)
 	    	for (int j = 0; j < snakecell.length; j++)
-	    System.out.println(snakecell[i][j]);
-	    
+	    		snakecell[i][j] = new SnakeCell();
 	}
 	
+	public void initGrid() {
+		initApples();
+		initSnake();
+	}
 	
+	private void initApples() {
+		snakecell[5][7].setFruitonfield(true);
+		//random verwenden, j i / anzahl wie viele Fuits (als konstante definieren) / Testen, ob es belegt ist/ Starten, ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
+	}
+	
+	private void initSnake() {
+		//random verwenden, j i merken wo snake ist , ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
+	}
 	
 	/*
 	public boolean fruitSnake() {
@@ -41,7 +53,6 @@ public static int MAX_LENGTH = 10;
 			return true;
 		} else
 			return false;
-
 	}*/
 	
 	/*public boolean eatSnake() {
@@ -54,7 +65,30 @@ public static int MAX_LENGTH = 10;
 }
 */
 
+	  public String toString() {
+		  StringBuffer sb = new StringBuffer();
+		  for (int i = 0; i < snakecell.length; i++)
+		    	for (int j = 0; j < snakecell.length; j++)
+		    		sb.append(snakecell[i][j]+ "\n");
+		  
+		  return sb.toString();
+		    
+	  }
+	  
+	  public String toStringLetters() {
+		  StringBuffer sb = new StringBuffer();
+		  for (int i = 0; i < snakecell.length; i++) {
+			  sb.append("\nI" );
+			  for (int j = 0; j < snakecell.length; j++) 
+		    		sb.append(snakecell[i][j].toStringLetters()+ "I"); 
+			  
+		  }
+		    
+		  
+		  return sb.toString();
+		    
+	  }
+	  
 }
 
 /* Fragen an Weissgerber: ist das Raster so richtig?*/
-
