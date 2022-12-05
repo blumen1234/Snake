@@ -1,5 +1,6 @@
 package ch.fhgr.jenb.snake;
 
+import java.util.Random;
 
 
 /*Raster bei der die Snakecell angezeigt wird. Länge und Breite wird definiert und die fixe Tabelle mit den 
@@ -31,18 +32,50 @@ public static int MAX_LENGTH = 10;
 	}
 	
 	public void initGrid() {
-		initApples();
-		initSnake();
+		placeApple();
+		placeSnake();
 	}
 	
-	private void initApples() {
-		snakecell[5][7].setFruitonfield(true);
+	private void placeApple() {
+		boolean placed = false;
+		
+		while (! placed) {
+			int x = random();
+			int y = random();
+			
+			SnakeCell cell = snakecell[x][y];
+			
+			if (!cell.isSnakeonfield()) {
+				cell.setFruitonfield(true);
+				placed = true;
+			}
+			
+			
+		}
+		
+		
 		//random verwenden, j i / anzahl wie viele Fuits (als konstante definieren) / Testen, ob es belegt ist/ Starten, ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
 	}
 	
-	private void initSnake() {
+	public int random() {
+		Random random = new Random();
+		int i = random.nextInt(MAX_LENGTH);
+		return i;	
+		
+			
+	
+	}
+	
+	private void placeSnake() {
+		int x = random();
+		int y = random();
+		snakecell[x][y].setSnakeonfield(true);
 		//random verwenden, j i merken wo snake ist , ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
 	}
+	// Koordinate des Schlangenkopfs muss man wissen, damit wir noch ein Feld hinzufügen können
+	// Schlagenkopf mit koordinate x und y / erste Abfrage ob koordinate nicht gleich am rand ist  
+	// move up, down, left, right erstellen mit boolean (if) 
+	
 	
 	/*
 	public boolean fruitSnake() {
@@ -78,9 +111,9 @@ public static int MAX_LENGTH = 10;
 	  public String toStringLetters() {
 		  StringBuffer sb = new StringBuffer();
 		  for (int i = 0; i < snakecell.length; i++) {
-			  sb.append("\nI" );
+			  sb.append("\n|" );
 			  for (int j = 0; j < snakecell.length; j++) 
-		    		sb.append(snakecell[i][j].toStringLetters()+ "I"); 
+		    		sb.append(snakecell[i][j].toStringLetters()+ "|"); 
 			  
 		  }
 		    
@@ -88,7 +121,8 @@ public static int MAX_LENGTH = 10;
 		  return sb.toString();
 		    
 	  }
+
+
 	  
 }
 
-/* Fragen an Weissgerber: ist das Raster so richtig?*/
