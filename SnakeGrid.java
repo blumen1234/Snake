@@ -11,6 +11,7 @@ import java.util.Random;
 public class SnakeGrid {
 	
 
+
 public static int MAX_LENGTH = 10;
 
 
@@ -34,6 +35,7 @@ public static int MAX_LENGTH = 10;
 	public void initGrid() {
 		placeApple();
 		placeSnake();
+		placeHead();
 	}
 	
 	private void placeApple() {
@@ -63,40 +65,53 @@ public static int MAX_LENGTH = 10;
 		return i;	
 		
 			
-	
 	}
 	
 	private void placeSnake() {
-		int x = random();
-		int y = random();
+		
+		int x = 5;
+		int y = 5;
 		snakecell[x][y].setSnakeonfield(true);
 		//random verwenden, j i merken wo snake ist , ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
+
 	}
+	
+	public void placeHead() {
+		
+		int x = 5;
+		int y = 6;
+		snakecell[x][y].setSnakeonfield(true);
+		
+		SnakeCell head = snakecell[x][y];
+		
+		// Wenn der Kopf auf dem gleichen Feld wie der Körper ist
+		
+		boolean gameover = true;
+
+		if (head.isSnakeonfield()) {
+			head.isSnakeheadonfield();
+			head.setSnakeonfield(gameover);}
+		
+		// Wenn der Kopf auf der Frucht ist, dann verschwindet die Frucht und eine neue Frucht wird gesetzt
+		if (head.isSnakeheadonfield()) {
+			head.isFruitonfield();
+			head.setFruitonfield(false);
+			placeApple();
+		}
+		
+
+		}
+	
+
+	
+		
+	
 	// Koordinate des Schlangenkopfs muss man wissen, damit wir noch ein Feld hinzufügen können
 	// Schlagenkopf mit koordinate x und y / erste Abfrage ob koordinate nicht gleich am rand ist  
 	// move up, down, left, right erstellen mit boolean (if) 
 	
-	
-	/*
-	public boolean fruitSnake() {
-		fruitonfield = true;
-		if (isSnakeonfield) {
-			eatFruit();
-			snakePlus();
-			return true;
-		} else
-			return false;
-	}*/
-	
-	/*public boolean eatSnake() {
-	isSnake = true;
-	if (isSnakeonfield) {
-		gameover();
-		return true;
-	} else
-		return false;
-}
-*/
+
+
 
 	  public String toString() {
 		  StringBuffer sb = new StringBuffer();
@@ -124,5 +139,5 @@ public static int MAX_LENGTH = 10;
 
 
 	  
-}
+}  
 
