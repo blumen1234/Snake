@@ -8,6 +8,11 @@ public class SnakeCell {
 
 	private boolean fruitonfield = false;
 	private boolean isSnakeonfield = false;
+	private boolean isSnakeheadonfield = false;
+	private boolean snakeUp = false;
+	private boolean snakeRight = false;
+	private boolean snakeLeft = false;
+	private boolean snakeDown = false;
 
 	public SnakeCell() {
 		
@@ -51,5 +56,45 @@ public class SnakeCell {
 		if (fruitonfield) return "o";
         return "x";
     }
+
+	public boolean isSnakeheadonfield() {
+		return isSnakeheadonfield;
+	}
+
+	public void setSnakeheadonfield(boolean isSnakeheadonfield) {
+		this.isSnakeheadonfield = isSnakeheadonfield;
+	}
+
+	public boolean isSnakeUp() {
+		return snakeUp;
+	}
+
+	public void setSnakeUp(boolean snakeUp) {
+		this.snakeUp = snakeUp;
+	}
+
+	public boolean isSnakeRight() {
+		return snakeRight;
+	}
+
+	public void setSnakeRight(boolean snakeRight) {
+		this.snakeRight = snakeRight;
+	}
+
+	public boolean isSnakeLeft() {
+		return snakeLeft;
+	}
+
+	public void setSnakeLeft(boolean snakeLeft) {
+		this.snakeLeft = snakeLeft;
+	}
+
+	public boolean isSnakeDown() {
+		return snakeDown;
+	}
+
+	public void setSnakeDown(boolean snakeDown) {
+		this.snakeDown = snakeDown;
+	}
 	
 }
