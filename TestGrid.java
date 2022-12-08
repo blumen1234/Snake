@@ -6,9 +6,13 @@ public class TestGrid {
 
 	public static void main(String[] args) {
 		SnakeGrid grid = new SnakeGrid();
-		System.out.println(grid.toStringLetters());
 		grid.initGrid();
 		System.out.println(grid.toStringLetters());
+		System.out.println(grid.snakeUp());
+		System.out.println(grid.snakeUp());
+		System.out.println(grid.snakeleft());
+		System.out.println(grid.snakeleft());
+		
 	}
 	
 }
