@@ -11,6 +11,13 @@ public class TestGrid {
 		SnakeGrid grid = new SnakeGrid();
 		grid.initGrid();
 		System.out.println(grid.toStringLetters());
+
+		System.out.println(grid.snakeUp());
+		System.out.println(grid.snakeUp());
+		System.out.println(grid.snakeleft());
+		System.out.println(grid.snakeleft());
+		
+
 		System.out.println(grid.snakeleft());
 		System.out.println(grid.toStringLetters());
 		System.out.println(grid.snakeleft());
