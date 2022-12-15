@@ -19,8 +19,12 @@ public static int MAX_LENGTH = 10;
 	/*Initialisierung mit einer Variable und einem Wert*/
 	private int headX = 5;
 	private int headY = 5;
+
 	private int backX = 5;
 	private int backY = 5;
+
+	private Snake schlange = new Snake();
+
 	int placeAppleX = 3;
 	int placeAppleY = 5;
 	
@@ -48,6 +52,7 @@ public static int MAX_LENGTH = 10;
 			int x = random();
 			int y = random();
 			
+
 			SnakeCell cell = snakecell[x][y];
 			
 			if (!cell.isSnakeonfield()) {
@@ -71,7 +76,11 @@ public static int MAX_LENGTH = 10;
 	}
 	
 	private void placeSnake() {
+
 		snakecell[headX][headY].setSnakeonfield(true);
+
+		schlange.init(snakecell[headX][headY]);
+
 		//random verwenden, j i merken wo snake ist , ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
 
 	}
@@ -84,6 +93,7 @@ public static int MAX_LENGTH = 10;
 	    
 		SnakeCell cell = snakecell[headX][headY];
 		if (cell.isSnakeonfield()) return false;
+
 		cell.setSnakeonfield(true);
 		if (cell.isFruitonfield()) {
 			placeApple();
@@ -112,11 +122,19 @@ public static int MAX_LENGTH = 10;
 			SnakeCell zelle = snakecell[backX][backY];
 			zelle.setSnakeonfield(false);
 		}
+
+		schlange.move(cell);
+		if (cell.isFruitonfield()) {
+			cell.setFruitonfield(false);
+			placeApple();
+		}
+		
+
 		return true;
 		
 		
 	} 
-	
+
 	public boolean snakeleft() {
 	    headY = headY -1;
 	    // oberster Rand erreicht = Game Over
@@ -126,6 +144,19 @@ public static int MAX_LENGTH = 10;
 		if (cell.isSnakeonfield()) return false;
 		cell.setSnakeonfield(true);
 		if (cell.isFruitonfield()) {
+
+	public boolean snakedown() {
+	    headX = headX +1;
+	    // oberster Rand erreicht = Game Over
+	    if (headX == 10) return false;
+	    
+		SnakeCell cell = snakecell[headX][headY];
+		if (cell.isSnakeonfield()) return false;
+		
+		schlange.move(cell);
+		if (cell.isFruitonfield()) {
+			cell.setFruitonfield(false);
+
 			placeApple();
 			//Apfel platzieren, 
 		} else {
@@ -134,10 +165,34 @@ public static int MAX_LENGTH = 10;
 		}
 		return true;
 		
+
+		return true;
+		
+		
+	} 
+	
+	public boolean snakeleft() {
+	    headY = headY -1;
+	    // oberster Rand erreicht = Game Over
+	    if (headY == -1) return false;
+	    
+		SnakeCell cell = snakecell[headX][headY];
+		if (cell.isSnakeonfield()) return false;
+		
+		schlange.move(cell);
+		if (cell.isFruitonfield()) {
+			cell.setFruitonfield(false);
+			placeApple();
+		}
+		
+		return true;
+		
+
 		
 	} 
 	
 	public boolean snakeright() {
+
 	    headX = headX +1;
 	    // oberster Rand erreicht = Game Over
 	    if (headX == 11) return false;
@@ -152,6 +207,20 @@ public static int MAX_LENGTH = 10;
 			SnakeCell zelle = snakecell[backX][backY];
 			zelle.setSnakeonfield(false);
 		}
+
+	    headY = headY +1;
+	    // oberster Rand erreicht = Game Over
+	    if (headY == 10) return false;
+	    
+		SnakeCell cell = snakecell[headX][headY];
+		if (cell.isSnakeonfield()) return false;
+		
+		schlange.move(cell);
+		if (cell.isFruitonfield()) {
+			cell.setFruitonfield(false);
+			placeApple();
+		}
+
 		return true;
 	} 
 		
@@ -189,5 +258,10 @@ public static int MAX_LENGTH = 10;
 
 
 	  
+
 }   
+
+} 
+
+
 
