@@ -1,6 +1,7 @@
 package ch.fhgr.jenb.snake;
 
 import java.util.Random;
+import java.util.Scanner;
 
 
 /*Raster bei der die Snakecell angezeigt wird. Länge und Breite wird definiert und die fixe Tabelle mit den 
@@ -20,10 +21,9 @@ public static int MAX_LENGTH = 10;
 	private int headX = 5;
 	private int headY = 5;
 	private Snake schlange = new Snake();
-	int placeAppleX = 3;
-	int placeAppleY = 5;
 	
-	/* Arrays ist ein nicht primitiver Datentyp*/
+	
+	// Definiertes Raster
 	private SnakeCell[][] snakecell = new SnakeCell[MAX_LENGTH][MAX_LENGTH];
 	
 	
@@ -35,11 +35,15 @@ public static int MAX_LENGTH = 10;
 	    		snakecell[i][j] = new SnakeCell();
 	}
 	
+	// Rasteransicht, was es alles drin hat
 	public void initGrid() {
-		placeSnake();
 		placeApple();
+		placeSnake();
 	}
 	
+
+
+	/* Der Apfel wird gesetzt und es wird überprüft ob schon eine Schlange auf diesem Feld ist*/
 	private void placeApple() {
 		boolean placed = false;
 		
@@ -62,6 +66,8 @@ public static int MAX_LENGTH = 10;
 		//random verwenden, j i / anzahl wie viele Fuits (als konstante definieren) / Testen, ob es belegt ist/ Starten, ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
 	}
 	
+	// Random Funktion und Definition wie viele Zahlen das Random beinhalten darf
+	
 	public int random() {
 		Random random = new Random();
 		int i = random.nextInt(MAX_LENGTH);
@@ -70,24 +76,28 @@ public static int MAX_LENGTH = 10;
 			
 	}
 	
+	// Beim Start soll es die definierte Initialisierung nehmen und das Objekt Snake
 	private void placeSnake() {
 		schlange.init(snakecell[headX][headY]);
-		//random verwenden, j i merken wo snake ist , ob die Snake umzingelt ist von Früchten (inti Snkae und Fruits)
+		
 
 	}
 	
-
+// Wenn up, dann nimmt es die Koordinaten von headX und geht eins hoch
 	public boolean snakeUp() {
 	    headX = headX -1;
 	    // oberster Rand erreicht = Game Over
 	    if (headX == -1) return false;
 	    
+	    // Schlange auf einer Zelle = Game Over
 		SnakeCell cell = snakecell[headX][headY];
 		if (cell.isSnakeonfield()) return false;
 		
+		// Ruft das File Snake auf und spielt die Funktion move ab. Wenn die Frucht die gleiche Zelle wie die Schlange hat, verschwindet die Frucht
 		schlange.move(cell);
 		if (cell.isFruitonfield()) {
 			cell.setFruitonfield(false);
+			// neuer Apfel wird gesetzt
 			placeApple();
 		}
 		
@@ -151,13 +161,22 @@ public static int MAX_LENGTH = 10;
 		return true;
 	} 
 		
+	public boolean isSnakeOnfield(int x, int y) {
+		SnakeCell cell = snakecell[x][y];
+		
+		return cell.isSnakeonfield();
+		
+		
+	}
 	
-	// Koordinate des Schlangenkopfs muss man wissen, damit wir noch ein Feld hinzufügen können
-	// Schlagenkopf mit koordinate x und y / erste Abfrage ob koordinate nicht gleich am rand ist  
-	// move up, down, left, right erstellen mit boolean (if) 
-	
-
-
+	public boolean isFruitOnfield(int x, int y) {
+		SnakeCell cell = snakecell[x][y];
+		
+		return cell.isFruitonfield();
+		
+		
+	}
+	// Raster wird gezeichnet mit einem String 
 
 	  public String toString() {
 		  StringBuffer sb = new StringBuffer();
@@ -182,6 +201,7 @@ public static int MAX_LENGTH = 10;
 		  return sb.toString();
 		    
 	  }
+
 
 
 	  
