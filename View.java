@@ -1,9 +1,5 @@
 package ch.fhgr.jenb.snake;
 
-
-
-
-
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.beans.EventHandler;
@@ -42,153 +38,162 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
-
-
 /* Funktion, um die Application abzuspielen*/
-//public class View extends Application {
-	
-	//private SnakeGrid grid = new SnakeGrid();
-	//boolean ok = true;
-	//private SnakeCell zelle = new SnakeCell();
-	
 
-	//@Override
-	/*void sagt es hat keinen return-Wert*/
-	//public void start(Stage primaryStage) {
-		//try {
-		
-			//int width = 600;
-			//int length = 400;
-			//Canvas a = new Canvas(width,length);
-			//GraphicsContext gc = a.getGraphicsContext2D();
-			
-			
-			
-			//gc.fillRect(0, 0, width, length);
-			
-			//primaryStage.setTitle("Snake");
-			//BorderPane root = new BorderPane();
-			
-			//Scene scene = new Scene(root,width,length);
-		
-			
-			
-			
+public class View extends Application {
 
-			//scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-			
-				//if (key.getCode() == KeyCode.W) { //KeyEvent
-					//ok = grid.snakeUp();
-					//}
-				//if (key.getCode() == KeyCode.A) {
-					//ok = grid.snakeleft();
-					//}
-				//if (key.getCode() == KeyCode.A) {
-					//ok = grid.snakedown();
-					//}
-				//if (key.getCode() == KeyCode.D) {
-					//ok = grid.snakeright();
-					//}
-			//});
-		
-			//if (zelle.isSnakeonfield() == false) {
-				//gc.setFill(Color.RED);
-				//gc.setFont(new Font("",50));
-				//gc.fillText("GAME OVER", width, length);
-				
-			//}
+	// Membervariablen
+	private SnakeGrid snakegrid = new SnakeGrid();
 
-			//if (zelle.isSnakeonfield() == true) {
-				//gc.setFill(Color.GREEN);
-			//}
-				
-			
-			//if(zelle.isFruitonfield() == true) {
-				//gc.setFill(Color.RED);
-			//}
-				
+	private static final String style_raster = "-fx-background-color: grey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
+	private static final String style_snake = "-fx-background-color: green; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
+	private static final String style_apple = "-fx-background-color: red; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
+
+	@Override
+	public void start(Stage stage) throws Exception {
+
+		int rows = 10;
+		int columns = 10;
+
+		stage.setTitle("Snake");
+		GridPane grid = new GridPane();
+		snakegrid.initGrid();
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < columns; col++) {
+				Region r1 = new Region();
+				if (snakegrid.isSnakeOnfield(row, col)) {
+					r1.setStyle(style_snake);
+
+				} else if (snakegrid.isFruitOnfield(row, col)) {
+					r1.setStyle(style_apple);
+				} else
+					r1.setStyle(style_raster);
+				grid.add(r1, col, row);
+
+			}
+
+		}
+
+		for (int i = 0; i < columns; i++) {
+			ColumnConstraints column = new ColumnConstraints(40);
+			grid.getColumnConstraints().add(column);
+		}
+		for (int i = 0; i < rows; i++) {
+			RowConstraints row = new RowConstraints(40);
+			grid.getRowConstraints().add(row);
+		}
+
+		FlowPane root = new FlowPane();
+		root.setVgap(6);
+		root.setHgap(5);
+		root.setPrefWrapLength(250);
+		Button b = new Button();
+		root.getChildren().add(b);
+		b.setOnAction(event -> {
+			System.out.println("Button clicked");
+            snakegrid.toReset();
+      
+ 	       
+        });
 		
-		
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			//primaryStage.setScene(scene);
-			//primaryStage.show();
+	   
+		root.getChildren().add(grid);
+
+		Scene scene = new Scene(root, (columns * 40) + 100, (rows * 40) + 100, Color.GRAY);
+
+		stage.setScene(scene);
+
+		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 			
-			
-			public class View extends Application {
 	
 
-			    //Membervariablen
-				private SnakeGrid snakegrid = new SnakeGrid();
-		
-				
+						if (e.getCode() == KeyCode.UP) {
+							snakegrid.snakeUp();
+							for (int row = 0; row < rows; row++) {
+								for (int col = 0; col < columns; col++) {
+									Region r2 = new Region();
+									if (snakegrid.isSnakeOnfield(row, col)) {
+										r2.setStyle(style_snake);
+
+									} else if (snakegrid.isFruitOnfield(row, col)) {
+										r2.setStyle(style_apple);
+									} else
+										r2.setStyle(style_raster);
+									grid.add(r2, col, row);
+
+								}
+
+							}
+							System.out.println("up");
+						}
+
+						if (e.getCode() == KeyCode.LEFT) {
+							snakegrid.snakeleft();
+							for (int row = 0; row < rows; row++) {
+								for (int col = 0; col < columns; col++) {
+									Region r2 = new Region();
+									if (snakegrid.isSnakeOnfield(row, col)) {
+										r2.setStyle(style_snake);
+
+									} else if (snakegrid.isFruitOnfield(row, col)) {
+										r2.setStyle(style_apple);
+									} else
+										r2.setStyle(style_raster);
+									grid.add(r2, col, row);
+
+								}
+
+							}
+							System.out.println("left");
+						}
+
+						if (e.getCode() == KeyCode.DOWN) {
+							snakegrid.snakedown();
+							for (int row = 0; row < rows; row++) {
+								for (int col = 0; col < columns; col++) {
+									Region r2 = new Region();
+									if (snakegrid.isSnakeOnfield(row, col)) {
+										r2.setStyle(style_snake);
+
+									} else if (snakegrid.isFruitOnfield(row, col)) {
+										r2.setStyle(style_apple);
+									} else
+										r2.setStyle(style_raster);
+									grid.add(r2, col, row);
+
+								}
+
+							}
+							System.out.println("down");
+						}
+
+						if (e.getCode() == KeyCode.RIGHT) {
+							snakegrid.snakeright();
+							for (int row = 0; row < rows; row++) {
+								for (int col = 0; col < columns; col++) {
+									Region r2 = new Region();
+									if (snakegrid.isSnakeOnfield(row, col)) {
+										r2.setStyle(style_snake);
+
+									} else if (snakegrid.isFruitOnfield(row, col)) {
+										r2.setStyle(style_apple);
+									} else
+										r2.setStyle(style_raster);
+									grid.add(r2, col, row);
+
+								}
+
+							}
+							System.out.println("right");
+						}
 					
-				private static final String style_raster = "-fx-background-color: grey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-			    private static final String style_snake = "-fx-background-color: green; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-			    private static final String style_apple = "-fx-background-color: red; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-				
-				@Override public void start(Stage stage) throws Exception {
-			    	
-			         
-				     //raster.buttons();
-				     
-			         int rows = 10;
-			         int columns = 10;
-			         
-			        
-			         stage.setTitle("Snake");
-			         GridPane grid = new GridPane(); 
-			         snakegrid.initGrid();
-			         for (int row = 0; row < rows; row++) {
-			        	    for (int col = 0; col < columns; col++) {
-			        	        Region r1 = new Region();
-			        	        if (snakegrid.isSnakeOnfield(row, col)) {
-			        	        	r1.setStyle(style_snake);
-			        	        	
-			        	        } else if(snakegrid.isFruitOnfield(row, col)) {
-			        	        	r1.setStyle(style_apple);
-			        	        }
-			        	        else r1.setStyle(style_raster);
-			        	        grid.add(r1, col, row);
-			        	        
-			        	        
-			        	    }
-			        	  
-	
-			        	}
-					      
-			         
-			         
-			        		
-			         
-			         for(int i = 0; i < columns; i++) {
-			         ColumnConstraints column = new ColumnConstraints(40);
-			         grid.getColumnConstraints().add(column);
-			         }
-			         for(int i = 0; i < rows; i++) {
-			         RowConstraints row = new RowConstraints(40);
-			         grid.getRowConstraints().add(row);
-			         }
-			         
-			         
-			         FlowPane root = new FlowPane();  
-			         root.setVgap(6);  
-			         root.setHgap(5);  
-			         root.setPrefWrapLength(250);  
-			         root.getChildren().add(new Button("Reset"));
-			         root.getChildren().add(grid);  
-			       
-			        
-			         //grid.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			   
-			         
-			         Scene scene = new Scene(root, (columns * 40) + 100, (rows * 40) + 100, Color.GRAY);
-			        
-			         stage.setScene(scene); 
-			         stage.show();  }
+		
+					
+		}
 
-
-
+		);
+		stage.show();
+	}
 
 	public static void main(String[] args) {
 		launch(args);
