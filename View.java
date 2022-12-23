@@ -44,6 +44,7 @@ public class View extends Application {
 
 	// Membervariablen
 	private SnakeGrid snakegrid = new SnakeGrid();
+	private Snake snake_1 = new Snake();
 
 	private static final String style_raster = "-fx-background-color: grey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
 	private static final String style_snake = "-fx-background-color: green; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
@@ -89,14 +90,12 @@ public class View extends Application {
 		root.setPrefWrapLength(250);
 		Button b = new Button();
 		root.getChildren().add(b);
+
 		b.setOnAction(event -> {
+			snakegrid.toReset();
 			System.out.println("Button clicked");
-            snakegrid.toReset();
-      
- 	       
-        });
-		
-	   
+		});
+
 		root.getChildren().add(grid);
 
 		Scene scene = new Scene(root, (columns * 40) + 100, (rows * 40) + 100, Color.GRAY);
@@ -105,90 +104,96 @@ public class View extends Application {
 
 		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 			
-	
+			if (snakegrid.isGameover()){
+				return;
+			}
 
-						if (e.getCode() == KeyCode.UP) {
-							snakegrid.snakeUp();
-							for (int row = 0; row < rows; row++) {
-								for (int col = 0; col < columns; col++) {
-									Region r2 = new Region();
-									if (snakegrid.isSnakeOnfield(row, col)) {
-										r2.setStyle(style_snake);
+			if (e.getCode() == KeyCode.UP) {
+				if (snakegrid.snakeUp()) {
+// nochmals eine Funktion machen und aufrufen (nicht mehrmals der gleichen Code verwenden)
+					for (int row = 0; row < rows; row++) {
+						for (int col = 0; col < columns; col++) {
+							Region r2 = new Region();
+							if (snakegrid.isSnakeOnfield(row, col)) {
+								r2.setStyle(style_snake);
 
-									} else if (snakegrid.isFruitOnfield(row, col)) {
-										r2.setStyle(style_apple);
-									} else
-										r2.setStyle(style_raster);
-									grid.add(r2, col, row);
+							} else if (snakegrid.isFruitOnfield(row, col)) {
+								r2.setStyle(style_apple);
+							} else
+								r2.setStyle(style_raster);
+							grid.add(r2, col, row);
 
-								}
-
-							}
-							System.out.println("up");
 						}
+					}
 
-						if (e.getCode() == KeyCode.LEFT) {
-							snakegrid.snakeleft();
-							for (int row = 0; row < rows; row++) {
-								for (int col = 0; col < columns; col++) {
-									Region r2 = new Region();
-									if (snakegrid.isSnakeOnfield(row, col)) {
-										r2.setStyle(style_snake);
+				}
+				
+				else System.out.println("up");
+					System.out.println("Gameover"); // Gameover Funktion erstellen
 
-									} else if (snakegrid.isFruitOnfield(row, col)) {
-										r2.setStyle(style_apple);
-									} else
-										r2.setStyle(style_raster);
-									grid.add(r2, col, row);
+			}
 
-								}
+			if (e.getCode() == KeyCode.LEFT) {
 
-							}
-							System.out.println("left");
-						}
+				snakegrid.snakeleft();
+				for (int row = 0; row < rows; row++) {
+					for (int col = 0; col < columns; col++) {
+						Region r2 = new Region();
+						if (snakegrid.isSnakeOnfield(row, col)) {
+							r2.setStyle(style_snake);
 
-						if (e.getCode() == KeyCode.DOWN) {
-							snakegrid.snakedown();
-							for (int row = 0; row < rows; row++) {
-								for (int col = 0; col < columns; col++) {
-									Region r2 = new Region();
-									if (snakegrid.isSnakeOnfield(row, col)) {
-										r2.setStyle(style_snake);
+						} else if (snakegrid.isFruitOnfield(row, col)) {
+							r2.setStyle(style_apple);
+						} else
+							r2.setStyle(style_raster);
+						grid.add(r2, col, row);
 
-									} else if (snakegrid.isFruitOnfield(row, col)) {
-										r2.setStyle(style_apple);
-									} else
-										r2.setStyle(style_raster);
-									grid.add(r2, col, row);
+					}
 
-								}
+				}
+				System.out.println("left");
+			}
 
-							}
-							System.out.println("down");
-						}
+			if (e.getCode() == KeyCode.DOWN) {
+				snakegrid.snakedown();
+				for (int row = 0; row < rows; row++) {
+					for (int col = 0; col < columns; col++) {
+						Region r2 = new Region();
+						if (snakegrid.isSnakeOnfield(row, col)) {
+							r2.setStyle(style_snake);
 
-						if (e.getCode() == KeyCode.RIGHT) {
-							snakegrid.snakeright();
-							for (int row = 0; row < rows; row++) {
-								for (int col = 0; col < columns; col++) {
-									Region r2 = new Region();
-									if (snakegrid.isSnakeOnfield(row, col)) {
-										r2.setStyle(style_snake);
+						} else if (snakegrid.isFruitOnfield(row, col)) {
+							r2.setStyle(style_apple);
+						} else
+							r2.setStyle(style_raster);
+						grid.add(r2, col, row);
 
-									} else if (snakegrid.isFruitOnfield(row, col)) {
-										r2.setStyle(style_apple);
-									} else
-										r2.setStyle(style_raster);
-									grid.add(r2, col, row);
+					}
 
-								}
+				}
+				System.out.println("down");
+			}
 
-							}
-							System.out.println("right");
-						}
-					
-		
-					
+			if (e.getCode() == KeyCode.RIGHT) {
+				snakegrid.snakeright();
+				for (int row = 0; row < rows; row++) {
+					for (int col = 0; col < columns; col++) {
+						Region r2 = new Region();
+						if (snakegrid.isSnakeOnfield(row, col)) {
+							r2.setStyle(style_snake);
+
+						} else if (snakegrid.isFruitOnfield(row, col)) {
+							r2.setStyle(style_apple);
+						} else
+							r2.setStyle(style_raster);
+						grid.add(r2, col, row);
+
+					}
+
+				}
+				System.out.println("right");
+			}
+
 		}
 
 		);
@@ -200,3 +205,4 @@ public class View extends Application {
 
 	}
 }
+
