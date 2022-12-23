@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class SnakeGrid {
 	
 
+	
 
 public static int MAX_LENGTH = 10;
 
@@ -20,6 +21,7 @@ public static int MAX_LENGTH = 10;
 	/*Initialisierung mit einer Variable und einem Wert*/
 	private int headX = 5;
 	private int headY = 5;
+	private boolean gameover = false;
 	private Snake schlange = new Snake();
 	
 	
@@ -87,11 +89,17 @@ public static int MAX_LENGTH = 10;
 	public boolean snakeUp() {
 	    headX = headX -1;
 	    // oberster Rand erreicht = Game Over
-	    if (headX == -1) return false;
+	    if (headX == -1) {
+	    	gameover = true;
+	    	return false;
+	    } 
 	    
 	    // Schlange auf einer Zelle = Game Over
 		SnakeCell cell = snakecell[headX][headY];
-		if (cell.isSnakeonfield()) return false;
+		if (cell.isSnakeonfield()) {
+			gameover = true;
+			return false;
+		}
 		
 		// Ruft das File Snake auf und spielt die Funktion move ab. Wenn die Frucht die gleiche Zelle wie die Schlange hat, verschwindet die Frucht
 		schlange.move(cell);
@@ -202,7 +210,33 @@ public static int MAX_LENGTH = 10;
 		    
 	  }
 
+	  public void toReset() {
+		    // Reset the grid and place the snake at the starting position
+		  
+		  	gameover = false;
+		  
+		    // Reset other game state variables
+		    headX = 5;
+		    headY = 5;
+		    schlange.getSchlange().clear();
+		    
+		    for (int i = 0; i < snakecell.length; i++)
+		        for (int j = 0; j < snakecell.length; j++)
+		            snakecell[i][j] = new SnakeCell();
 
+		    placeApple();
+		    placeSnake();
+		    
+		    System.out.println("Game reset");
+		}
 
+	public boolean isGameover() {
+		return gameover;
+	}
+
+	
 	  
-} 
+	 
+}
+	  
+
