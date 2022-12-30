@@ -1,195 +1,120 @@
 package ch.fhgr.jenb.snake;
 
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-import java.beans.EventHandler;
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
-
-import org.w3c.dom.Text;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-/* Funktion, um die Application abzuspielen*/
+// Funktion, um die Application abzuspielen
 
 public class View extends Application {
 
-	// Membervariablen
+	// Membervariablen werden hier definiert
+	
+	//Die Klassen aus dem File SnakeGrid werden in View integriert
 	private SnakeGrid snakegrid = new SnakeGrid();
-	private Snake snake_1 = new Snake();
+	// Farben, Formen und Grössen werden hier für das Spielfeld definiert
+	private static final String style_raster = "-fx-background-color: grey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 60; -fx-min-height: 60; -fx-max-width:40; -fx-max-height: 40;";
+	private static final String style_snake = "-fx-background-color: green; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 60; -fx-min-height:60; -fx-max-width:40; -fx-max-height: 40;";
+	private static final String style_apple = "-fx-background-color: red; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 60; -fx-min-height:60; -fx-max-width:40; -fx-max-height: 40;";
 
-	private static final String style_raster = "-fx-background-color: grey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-	private static final String style_snake = "-fx-background-color: green; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-	private static final String style_apple = "-fx-background-color: red; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: black; -fx-min-width: 40; -fx-min-height:40; -fx-max-width:40; -fx-max-height: 40;";
-
-	@Override
-	public void start(Stage stage) throws Exception {
-
-		int rows = 10;
-		int columns = 10;
-
-		stage.setTitle("Snake");
-		GridPane grid = new GridPane();
-		snakegrid.initGrid();
+	// hier wird die Funktion via Import Java aufgerufen
+	GridPane grid = new GridPane();
+	
+	// Die maximale Länge und maximale Breite des Rasters wird hier als variable definiert
+	int rows = snakegrid.MAX_LENGTH;
+	int columns = snakegrid.MAX_LENGTH;
+	
+	// Funktion, um das Raster immer wieder zu zeichnen
+	public void snakeinterface() {
+		
+		// die for-Schleife zeichnet immer wieder das Raster für das Spielfeld
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < columns; col++) {
-				Region r1 = new Region();
+				Region r2 = new Region();
 				if (snakegrid.isSnakeOnfield(row, col)) {
-					r1.setStyle(style_snake);
+					r2.setStyle(style_snake);
 
 				} else if (snakegrid.isFruitOnfield(row, col)) {
-					r1.setStyle(style_apple);
+					r2.setStyle(style_apple);
 				} else
-					r1.setStyle(style_raster);
-				grid.add(r1, col, row);
+					r2.setStyle(style_raster);
+				grid.add(r2, col, row);
 
 			}
-
 		}
-
-		for (int i = 0; i < columns; i++) {
-			ColumnConstraints column = new ColumnConstraints(40);
-			grid.getColumnConstraints().add(column);
-		}
-		for (int i = 0; i < rows; i++) {
-			RowConstraints row = new RowConstraints(40);
-			grid.getRowConstraints().add(row);
-		}
-
-		FlowPane root = new FlowPane();
-		root.setVgap(6);
-		root.setHgap(5);
-		root.setPrefWrapLength(250);
-		Button b = new Button();
-		root.getChildren().add(b);
-
-		b.setOnAction(event -> {
-			snakegrid.toReset();
-			System.out.println("Button clicked");
-		});
-
-		root.getChildren().add(grid);
-
-		Scene scene = new Scene(root, (columns * 40) + 100, (rows * 40) + 100, Color.GRAY);
-
+		
+	}
+	@Override
+	public void start(Stage stage) throws Exception {
+		
+		// Titel der Desktopanzeige
+		stage.setTitle("Snake");
+		
+		// ruft die Funktion im SnakeGrid auf
+		snakegrid.initGrid();
+		
+		// ruft die Funktion auf
+		snakeinterface();
+		
+		// In dem Desktop soll folgendes erscheinen, die Funktionen und die Grösse des Desktops
+		Scene scene = new Scene(grid, 600, 600);
+		// Anzeige des Desktops
 		stage.setScene(scene);
-
+	
+		// zur Anzeige soll die Tastatur mitverwendet werden, keyEvent wird vom Import Java geholt
 		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 			
 			if (snakegrid.isGameover()){
-				return;
+				Alert meldung = new Alert(AlertType.INFORMATION);
+				meldung.setHeaderText("GAMEOVER");
+				meldung.setContentText("Du hast leider verloren");
+				meldung.showAndWait().ifPresent(ok -> {
+				    if (ok == ButtonType.OK) {
+				    	snakegrid.toReset();
+				        System.out.println("OK gedrückt");
+				    }
+				});
+				
 			}
 
 			if (e.getCode() == KeyCode.UP) {
 				if (snakegrid.snakeUp()) {
-// nochmals eine Funktion machen und aufrufen (nicht mehrmals der gleichen Code verwenden)
-					for (int row = 0; row < rows; row++) {
-						for (int col = 0; col < columns; col++) {
-							Region r2 = new Region();
-							if (snakegrid.isSnakeOnfield(row, col)) {
-								r2.setStyle(style_snake);
-
-							} else if (snakegrid.isFruitOnfield(row, col)) {
-								r2.setStyle(style_apple);
-							} else
-								r2.setStyle(style_raster);
-							grid.add(r2, col, row);
-
-						}
-					}
+				snakeinterface();
 
 				}
 				
-				else System.out.println("up");
-					System.out.println("Gameover"); // Gameover Funktion erstellen
+				 System.out.println("up");
+					 
 
 			}
 
 			if (e.getCode() == KeyCode.LEFT) {
 
-				snakegrid.snakeleft();
-				for (int row = 0; row < rows; row++) {
-					for (int col = 0; col < columns; col++) {
-						Region r2 = new Region();
-						if (snakegrid.isSnakeOnfield(row, col)) {
-							r2.setStyle(style_snake);
-
-						} else if (snakegrid.isFruitOnfield(row, col)) {
-							r2.setStyle(style_apple);
-						} else
-							r2.setStyle(style_raster);
-						grid.add(r2, col, row);
-
-					}
-
-				}
+				if (snakegrid.snakeleft()) {
+					// ruft die Funktion auf
+					snakeinterface();
+			} 
 				System.out.println("left");
 			}
 
 			if (e.getCode() == KeyCode.DOWN) {
-				snakegrid.snakedown();
-				for (int row = 0; row < rows; row++) {
-					for (int col = 0; col < columns; col++) {
-						Region r2 = new Region();
-						if (snakegrid.isSnakeOnfield(row, col)) {
-							r2.setStyle(style_snake);
-
-						} else if (snakegrid.isFruitOnfield(row, col)) {
-							r2.setStyle(style_apple);
-						} else
-							r2.setStyle(style_raster);
-						grid.add(r2, col, row);
-
-					}
-
+				if(snakegrid.snakedown()) {
+					snakeinterface();
 				}
 				System.out.println("down");
 			}
 
 			if (e.getCode() == KeyCode.RIGHT) {
-				snakegrid.snakeright();
-				for (int row = 0; row < rows; row++) {
-					for (int col = 0; col < columns; col++) {
-						Region r2 = new Region();
-						if (snakegrid.isSnakeOnfield(row, col)) {
-							r2.setStyle(style_snake);
-
-						} else if (snakegrid.isFruitOnfield(row, col)) {
-							r2.setStyle(style_apple);
-						} else
-							r2.setStyle(style_raster);
-						grid.add(r2, col, row);
-
-					}
-
+				if (snakegrid.snakeright()) {
+					snakeinterface();
 				}
 				System.out.println("right");
 			}
@@ -198,7 +123,9 @@ public class View extends Application {
 
 		);
 		stage.show();
+		
 	}
+
 
 	public static void main(String[] args) {
 		launch(args);
