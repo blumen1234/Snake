@@ -13,7 +13,7 @@ public class Snake {
 	public void setSchlange(ArrayList<SnakeCell> schlange) {
 		this.schlange = schlange;
 	}
-	
+	// Schlange bewegt sich, wenn keine Frucht auf dem Feld ist
 	public void move(SnakeCell newcell) {
 		schlange.add(newcell);
 		newcell.setSnakeonfield(true);
@@ -31,6 +31,13 @@ public class Snake {
 		schlange.clear();
 		newcell.setSnakeonfield(true);
 		schlange.add(newcell);
+		
+	}
+	public void gameOverSnake(SnakeCell newcell) {
+		if (newcell.isSnakeonfield()) {
+			System.out.println("Game Over");
+			schlange.clear();
+		}
 		
 	}
 	
