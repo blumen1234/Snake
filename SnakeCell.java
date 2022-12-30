@@ -1,6 +1,6 @@
 package ch.fhgr.jenb.snake;
 
-/* Die Snakecell hat nur Eigenschaften. Es kann eine Frucht, eine Schlange oder eine leere Zelle
+/* Die Snakecell hat nur Eigenschaften. Es kann eine Frucht, eine Schlange oder eine leere Zelle 
  * haben. Die Zelle ist nur ersichtlich und hat keine weiteren Aktionen.
  */
 
