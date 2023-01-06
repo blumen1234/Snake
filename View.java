@@ -1,7 +1,12 @@
 package ch.fhgr.jenb.snake;
 
 
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -11,13 +16,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 // Funktion, um die Application abzuspielen
 
-public class View extends Application {
+public class Main extends Application {
 
 	// Membervariablen werden hier definiert
-	
+
+
 	//Die Klassen aus dem File SnakeGrid werden in View integriert
 	private SnakeGrid snakegrid = new SnakeGrid();
 	// Farben, Formen und Grössen werden hier für das Spielfeld definiert
@@ -32,9 +40,11 @@ public class View extends Application {
 	int rows = snakegrid.MAX_LENGTH;
 	int columns = snakegrid.MAX_LENGTH;
 	
+	private int speed = 500;
+	
 	// Funktion, um das Raster immer wieder zu zeichnen
 	public void snakeinterface() {
-		
+		grid.getChildren().clear();
 		// die for-Schleife zeichnet immer wieder das Raster für das Spielfeld
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < columns; col++) {
@@ -47,14 +57,93 @@ public class View extends Application {
 				} else
 					r2.setStyle(style_raster);
 				grid.add(r2, col, row);
-
+				
 			}
 		}
 		
 	}
+
+	private KeyCode direction = KeyCode.DOWN;
+
+	// Erstelle eine neue Timeline
+	Timeline timeline = new Timeline();
+				
+			
+	private void moveSnake() {
+	    // Bewegung der Schlange steuern
+	    switch (direction) {
+	        case UP:
+	    
+	        	snakegrid.snakeUp();
+	    	
+	        	snakeinterface();
+	        	
+	    
+	            // Schlange nach oben bewegen
+	            break;
+	        case DOWN:
+	    
+	        	snakegrid.snakedown();
+	    	
+	        	snakeinterface();
+	    	
+	            // Schlange nach unten bewegen
+	            break;
+	        case LEFT:
+	   
+	        	snakegrid.snakeleft();
+	    
+	        	snakeinterface();
+	            // Schlange nach links bewegen
+	            break;
+	        case RIGHT:
+	   
+	        	snakegrid.snakeright();
+	        	snakeinterface();
+	            // Schlange nach rechts bewegen
+	            break;
+	    }
+	    
+		if (snakegrid.isGameover()){
+			timeline.stop();
+			Alert meldung = new Alert(AlertType.INFORMATION);
+			meldung.setHeaderText("GAMEOVER");
+			meldung.setContentText("Du hast leider verloren");
+			meldung.showAndWait().ifPresent(ok -> {
+				
+			    if (ok == ButtonType.OK) {
+			    	snakegrid.toReset();
+			    	restartTimeline();
+			        System.out.println("OK gedrückt");
+			    }
+			
+			});	
+	}
+		
+	}
+
+	
+	private void Timeline() {
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		// Erstelle ein KeyFrame, das die moveSnake()-Methode aufruft und setze die Dauer auf 500 Millisekunden
+		KeyFrame keyFrame = new KeyFrame(Duration.millis(speed), event -> moveSnake());
+		// Füge das KeyFrame der Timeline hinzu
+		timeline.getKeyFrames().add(keyFrame);
+		// Starte die Timeline
+		timeline.play();
+		
+	}
+	private void restartTimeline() {
+	    timeline.stop();
+	    timeline.getKeyFrames().clear();
+	    Timeline();
+	}
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		
+		Timeline();
+					
 		// Titel der Desktopanzeige
 		stage.setTitle("Snake");
 		
@@ -68,57 +157,55 @@ public class View extends Application {
 		Scene scene = new Scene(grid, 600, 600);
 		// Anzeige des Desktops
 		stage.setScene(scene);
-	
+		
 		// zur Anzeige soll die Tastatur mitverwendet werden, keyEvent wird vom Import Java geholt
 		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-			
 			if (snakegrid.isGameover()){
+				timeline.stop();
 				Alert meldung = new Alert(AlertType.INFORMATION);
 				meldung.setHeaderText("GAMEOVER");
 				meldung.setContentText("Du hast leider verloren");
 				meldung.showAndWait().ifPresent(ok -> {
+			
 				    if (ok == ButtonType.OK) {
 				    	snakegrid.toReset();
+				    	restartTimeline();
 				        System.out.println("OK gedrückt");
 				    }
-				});
 				
-			}
-
+				});	
+		}
+			
+		
+			
 			if (e.getCode() == KeyCode.UP) {
-				if (snakegrid.snakeUp()) {
-				snakeinterface();
-
-				}
-				
+			
+				direction = KeyCode.UP;
+				moveSnake();
 				 System.out.println("up");
-					 
-
 			}
 
-			if (e.getCode() == KeyCode.LEFT) {
-
-				if (snakegrid.snakeleft()) {
-					// ruft die Funktion auf
-					snakeinterface();
-			} 
+			else if (e.getCode() == KeyCode.LEFT) {
+		
+				direction = KeyCode.LEFT;
+				moveSnake();
 				System.out.println("left");
 			}
 
-			if (e.getCode() == KeyCode.DOWN) {
-				if(snakegrid.snakedown()) {
-					snakeinterface();
-				}
+			else if (e.getCode() == KeyCode.DOWN) {
+			
+				direction = KeyCode.DOWN;
+				moveSnake();
 				System.out.println("down");
 			}
 
-			if (e.getCode() == KeyCode.RIGHT) {
-				if (snakegrid.snakeright()) {
-					snakeinterface();
-				}
+			else if (e.getCode() == KeyCode.RIGHT) {
+				 
+				direction = KeyCode.RIGHT;
+				moveSnake();
 				System.out.println("right");
 			}
-
+		
 		}
 
 		);
