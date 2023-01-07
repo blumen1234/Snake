@@ -1,34 +1,27 @@
-package ch.fhgr.jenb.snake;
+package ch.fhgr.jenb.snake.main.logik;
 
 import java.util.Random;
 
 public class SnakeGrid {
 
-	// Membervariablen
-	// Länge des Rasters wird hier initialisiert mit einer Variable und Wert
 	public int MAX_LENGTH = 10;
-	// Variable mit Wert, welcher den Ort der Schlange auf dem Feld definiert
-	private int headX = 5;
-	private int headY = 5;
+	private int headX = 4;
+	private int headY = 4;
 
-	// Anfangsstatus des Spiels ist kein Gameover
 	private boolean gameover = false;
 
-	// Instanzierung
 	private Snake schlange = new Snake();
 
-	// Instanzierung der max. Rasterelemente
 	private SnakeCell[][] snakecell = new SnakeCell[MAX_LENGTH][MAX_LENGTH];
 
-	/* public,private und default sind Attribute einer Variable */
+
 	public SnakeGrid() {
-		// Anfangswerte setzen für alle 100 Felder
 		for (int i = 0; i < snakecell.length; i++)
 			for (int j = 0; j < snakecell.length; j++)
 				snakecell[i][j] = new SnakeCell();
 	}
 
-	// Random Funktion und Definition das nur bis Variable Max_lenght darf zählen
+
 	public int random() {
 		Random random = new Random();
 		int i = random.nextInt(MAX_LENGTH);
@@ -36,10 +29,7 @@ public class SnakeGrid {
 
 	}
 
-	/*
-	 * Der Apfel wird gesetzt, wenn keine Frucht gesetzt ist und es wird überprüft
-	 * ob schon eine Schlange auf diesem Feld ist
-	 */
+	
 	private void placeApple() {
 		boolean placed = false;
 
@@ -47,7 +37,6 @@ public class SnakeGrid {
 			int x = random();
 			int y = random();
 
-			// Instanzierung der SnakeCell / Abfrage wo was sein könnte
 			SnakeCell cell = snakecell[x][y];
 
 			if (!cell.isSnakeonfield()) {
@@ -59,19 +48,16 @@ public class SnakeGrid {
 
 	}
 
-	// Beim Start soll es die definierte Initialisierung nehmen und das Objekt Snake
+
 	private void placeSnake() {
-		// hier wird die Definiton von der Schlange integriert und sie mit den
-		// Anfangswerten bestückt
 		schlange.init(snakecell[headX][headY]);
 
 	}
 
 	
 	public boolean snakeUp() {
-		// Wenn up, dann nimmt es die Koordinaten von headX und geht eins hoch
 		headX = headX - 1;
-		// oberster Rand erreicht = Game Over
+	
 		if (headX == -1) {
 			gameover = true;
 			return false;
@@ -84,21 +70,14 @@ public class SnakeGrid {
 			return false;
 		}
 
-		// Ruft das File Snake auf und spielt die Funktion move ab. Wenn die Frucht die
-		// gleiche Zelle wie die Schlange hat, verschwindet die Frucht
-		schlange.move(cell);
-		if (cell.isFruitonfield()) {
-			cell.setFruitonfield(false);
-			// neuer Apfel wird gesetzt
-			placeApple();
-		}
+		snakeEat();
 
 		return true;
 
 	}
 
 	
-	public boolean snakedown() {
+	public boolean snakeDown() {
 		// Wenn down, dann nimmt es die Koordinaten von headX und geht eins runter
 		headX = headX + 1;
 		// oberster Rand erreicht = Game Over
@@ -113,47 +92,36 @@ public class SnakeGrid {
 			return false;
 		}
 
-		schlange.move(cell);
-		if (cell.isFruitonfield()) {
-			cell.setFruitonfield(false);
-			placeApple();
-		}
+		snakeEat();
 
 		return true;
 
 	}
 
 
-	public boolean snakeleft() {
-		// Wenn left, dann nimmt es die Koordinaten von headY und geht eins links
+	public boolean snakeLeft() {
+	
 		headY = headY - 1;
-		// oberster Rand erreicht = Game Over
+		// Rand erreicht -- Gameover
 		if (headY == -1) {
 			gameover = true;
 			return false;
 		}
-
+		// Schlange trifft Schlange -- Gameover
 		SnakeCell cell = snakecell[headX][headY];
 		if (cell.isSnakeonfield()) {
 			gameover = true;
 			return false;
 		}
-
-		schlange.move(cell);
-		if (cell.isFruitonfield()) {
-			cell.setFruitonfield(false);
-			placeApple();
-		}
+		snakeEat();
 
 		return true;
 
 	}
 
 
-	public boolean snakeright() {
-		// Wenn right, dann nimmt es die Koordinaten von headY und geht eins rechts
+	public boolean snakeRight() {
 		headY = headY + 1;
-		// oberster Rand erreicht = Game Over
 		if (headY == 10) {
 			gameover = true;
 			return false;
@@ -165,11 +133,7 @@ public class SnakeGrid {
 			return false;
 		}
 
-		schlange.move(cell);
-		if (cell.isFruitonfield()) {
-			cell.setFruitonfield(false);
-			placeApple();
-		}
+		snakeEat();
 
 		return true;
 	}
@@ -178,7 +142,6 @@ public class SnakeGrid {
 	// erstellt, welche wiederverwendet werden kann
 	public boolean isSnakeOnfield(int x, int y) {
 		SnakeCell cell = snakecell[x][y];
-
 		return cell.isSnakeonfield();
 
 	}
@@ -187,33 +150,28 @@ public class SnakeGrid {
 	// welche wiederverwendet werden kann
 	public boolean isFruitOnfield(int x, int y) {
 		SnakeCell cell = snakecell[x][y];
-
 		return cell.isFruitonfield();
 
 	}
 
-	// die Logik von Frucht und Snake zusammenführen in eine Funktion
 	public void initGrid() {
 		placeApple();
 		placeSnake();
 	}
 
-	// Die Funktion, um das Spiel auf Anfang zu wechseln
+
 	public void toReset() {
-		// Status is kein Gameover -- es ist nur ein reset
 		gameover = false;
-		// Anbfrage wo die Schlange ist und löschen
 		schlange.getSchlange().clear();
 
-		headX = 5;
-		headY = 5;
+		headX = 4;
+		headY = 4;
 
 		for (int i = 0; i < snakecell.length; i++)
 			for (int j = 0; j < snakecell.length; j++)
 				snakecell[i][j] = new SnakeCell();
 
-		placeApple();
-		placeSnake();
+		initGrid();
 
 		System.out.println("Game reset");
 	}
@@ -221,6 +179,20 @@ public class SnakeGrid {
 	public boolean isGameover() {
 		return gameover;
 	}
+	
+	
+	public void snakeEat() {
+		SnakeCell cell = snakecell[headX][headY];
+		// Schlange isst Frucht
+		schlange.move(cell);
+		if (cell.isFruitonfield()) {
+			cell.setFruitonfield(false);
+			placeApple();
+		}
+		
+	}
+	
+	
 
 	// Raster für die Ausgabe in der Konsole wird hier gezeichnet - für die
 	// Überprüfung der Logik
@@ -250,5 +222,4 @@ public class SnakeGrid {
 	}
 
 }
-	  
 
