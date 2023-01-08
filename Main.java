@@ -1,6 +1,5 @@
-package ch.fhgr.jenb.snake.main;
+package ch.fhgr.jenb.snake.main.logik;
 
-import ch.fhgr.jenb.snake.main.logik.SnakeGrid;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -97,7 +96,7 @@ public class Main extends Application {
 	}
 
 	public void moveSnake() {
-
+		
 		switch (direction) {
 		case UP:
 
@@ -129,6 +128,7 @@ public class Main extends Application {
 		default:
 			break;
 		}
+		
 
 		if (snakegrid.isGameover()) {
 			timeline.stop();
@@ -143,11 +143,16 @@ public class Main extends Application {
 					System.out.println("gameover");
 				}
 			});
+		
+		
 		}
 
 	}
 
 	private void Timeline() {
+		if (snakegrid.ateApple()) {
+		    SPEED -= 100; // Geschwindigkeit um 100 Millisekunden verringern
+		}
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame keyFrame = new KeyFrame(Duration.millis(SPEED), event -> moveSnake());
 		timeline.getKeyFrames().add(keyFrame);
