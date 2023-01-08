@@ -9,6 +9,7 @@ public class SnakeGrid {
 	private int headY = 4;
 
 	private boolean gameover = false;
+	private boolean ateApple = false;
 
 	private Snake schlange = new Snake();
 
@@ -188,11 +189,14 @@ public class SnakeGrid {
 		if (cell.isFruitonfield()) {
 			cell.setFruitonfield(false);
 			placeApple();
+			ateApple = true;
 		}
 		
 	}
 	
-	
+	public boolean ateApple() {
+		return ateApple;
+	}
 
 	// Raster für die Ausgabe in der Konsole wird hier gezeichnet - für die
 	// Überprüfung der Logik
@@ -222,4 +226,3 @@ public class SnakeGrid {
 	}
 
 }
-
